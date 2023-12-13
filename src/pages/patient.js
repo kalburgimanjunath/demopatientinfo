@@ -16,6 +16,7 @@ export default function Patient({ title }) {
   const NewTable = ({ user, age = 0 }) => {
     console.log(user);
     const [isValidAge, setValidAge] = useState(true);
+
     return (
       <>
         {user.resource.name ? (
@@ -26,15 +27,11 @@ export default function Patient({ title }) {
               let diffYear = 2023 - year;
               return diffYear;
             };
-            // if (getAge() < age) {
-            //   setValidAge(false);
-            // } else{
-            //   setValidAge(true);
-            // }
+
             return (
               <React.Fragment
                 key={index}
-                style={{ display: isValidAge ? "block" : "none" }}
+                style={{ display: getAge() < age ? "block" : "none" }}
               >
                 <td></td>
                 <td>
@@ -91,8 +88,17 @@ export default function Patient({ title }) {
           <tbody>
             {patients &&
               patients.map((item, index) => {
+                const getAge = () => {
+                  const date = new Date(item.resource.birthDate);
+                  let year = date.getUTCFullYear();
+                  let diffYear = 2023 - year;
+                  return diffYear;
+                };
                 return (
-                  <tr key={item.name + index * Math.random(5)}>
+                  <tr
+                    key={item.name + index * Math.random(5)}
+                    style={{ display: getAge() < age ? "block" : "none" }}
+                  >
                     {item ? <NewTable user={item} age={age} /> : null}
                   </tr>
                 );

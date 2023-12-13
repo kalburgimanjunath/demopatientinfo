@@ -29,6 +29,7 @@ export default function FilterAge({ updateAge }) {
           max={100}
           step={1}
         />
+        {ageRange}
       </div>
     </div>
   );
