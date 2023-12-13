@@ -29,10 +29,7 @@ export default function Patient({ title }) {
             };
 
             return (
-              <React.Fragment
-                key={index}
-                style={{ display: getAge() < age ? "block" : "none" }}
-              >
+              <React.Fragment key={index}>
                 <td></td>
                 <td>
                   {detail.prefix} {detail.family} {detail.given}{" "}
@@ -74,7 +71,7 @@ export default function Patient({ title }) {
       <div className="m-10">
         <FilterAge updateAge={handleAgeUpdate} />
         <table className="">
-          <thead>
+          <thead className="font-bold capitalize">
             <tr>
               <td>profile</td>
               <td>Name</td>
@@ -97,7 +94,10 @@ export default function Patient({ title }) {
                 return (
                   <tr
                     key={item.name + index * Math.random(5)}
-                    style={{ display: getAge() < age ? "block" : "none" }}
+                    style={{
+                      display:
+                        getAge() < age || getAge == "-" ? "table-row" : "none",
+                    }}
                   >
                     {item ? <NewTable user={item} age={age} /> : null}
                   </tr>
