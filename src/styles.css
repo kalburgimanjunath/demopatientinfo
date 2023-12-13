@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body {
+  @apply bg-gray-300;
+  overflow: auto;
+}
+.header {
+  @apply border-b-2 bg-white p-3 flex justify-between;
+  left: 120px;
+  position: fixed;
+  width: 100%;
+}
+.sidebar {
+  @apply list-none shadow-lg border-2 p-2 fixed bg-white h-full top-0 left-0 justify-end;
+}
+table {
+  @apply justify-center;
+}
+table td {
+  @apply p-2;
+}
+table thead td {
+  background-color: transparent;
+}
+
+table tbody {
+  @apply bg-white shadow-lg;
+}
+table tbody td {
+  @apply border border-gray-200;
+}
+
+.patient_page {
+  position: fixed;
+  left: 120px;
+  top: 53px;
+  right: 0;
+}
+#range-slider .range-slider__thumb[data-lower] {
+  width: 0;
+}
+
+#range-slider .range-slider__range {
+  border-radius: 1px;
+}
