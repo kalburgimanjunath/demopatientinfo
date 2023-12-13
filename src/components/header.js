@@ -3,7 +3,7 @@ function Search() {
     <div>
       <input
         type="search"
-        className="border-2 rounded-md"
+        className="border-2 rounded-md p-1"
         placeholder="search for anything.. "
       />
     </div>

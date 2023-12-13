@@ -13,7 +13,7 @@ export default function Patient({ title }) {
       .then((result) => setPatients(result.entry))
       .catch((err) => console.log(err));
   }, []);
-  const NewTable = ({ user, age = 0 }) => {
+  const NewTableRow = ({ user, age = 0 }) => {
     console.log(user);
     const [isValidAge, setValidAge] = useState(true);
 
@@ -62,7 +62,7 @@ export default function Patient({ title }) {
     <div className="patient_page">
       <div className="bg-white flex items-center justify-between">
         <h3 className="p-2 border-b-2 bg-white font-bold">{title}</h3>
-        <div className="flex justify-evenly">
+        <div className="flex justify-evenly items-center">
           <div>{showTime}</div>
           <div>Stop</div>
           <div>more</div>
@@ -70,6 +70,7 @@ export default function Patient({ title }) {
       </div>
       <div className="m-10">
         <FilterAge updateAge={handleAgeUpdate} />
+        <div>Total:{patients.length}</div>
         <table className="">
           <thead className="font-bold capitalize">
             <tr>
@@ -96,10 +97,14 @@ export default function Patient({ title }) {
                     key={item.name + index * Math.random(5)}
                     style={{
                       display:
-                        getAge() < age || getAge == "-" ? "table-row" : "none",
+                        ((age && age > 0) || age < 100) &&
+                        getAge() !== "-" &&
+                        getAge() < age
+                          ? "table-row"
+                          : "none",
                     }}
                   >
-                    {item ? <NewTable user={item} age={age} /> : null}
+                    {item ? <NewTableRow user={item} age={age} /> : null}
                   </tr>
                 );
               })}

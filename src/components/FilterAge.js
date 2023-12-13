@@ -2,7 +2,7 @@ import { useState } from "react";
 import RangeSlider from "react-range-slider-input";
 import "react-range-slider-input/dist/style.css";
 export default function FilterAge({ updateAge }) {
-  const [ageRange, setAgeRange] = useState([20, 90]);
+  const [ageRange, setAgeRange] = useState(20);
   return (
     <div className="p-2 font-bold flex items-center">
       <div className="text-xs w-1/3">Filter by Age:</div>
