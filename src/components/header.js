@@ -13,7 +13,7 @@ export default function Header() {
   return (
     <div className="header">
       <Search />
-      <div>Mr.Dragon</div>
+      <div className="p-2">Mr.Dragon</div>
     </div>
   );
 }
