@@ -1,126 +1,232 @@
 import React, { useState, useEffect } from "react";
-import { FilterAge } from "../components";
+import { FilterAge, NewTableRow } from "../components";
 export default function Patient({ title }) {
   const [patients, setPatients] = useState([]);
-  const [patientFilter, setPatientFilter] = useState(patients);
-  const [age, setAge] = useState(25);
+  const [patientFilter, setPatientFilter] = useState([]);
+  const [age, setAge] = useState(0);
   function handleAgeUpdate(e) {
     setAge(e);
+
     const newPatientList = patients.filter((item) => {
-      return item.resource.birthDate && item.resource.birthDate != undefined;
+      const getAge = () => {
+        const date = new Date(item.resource.birthDate);
+        let year = date.getUTCFullYear();
+        let diffYear = 2023 - year;
+        if (isNaN(diffYear) && !item.resource.birthDate) {
+          return "-";
+        }
+
+        return diffYear;
+      };
+      return getAge() < age && item.resource.birthDate != undefined;
     });
     setPatientFilter(newPatientList);
   }
   useEffect(() => {
-    if (age) {
+    if (age == 0) {
       fetch("https://hapi.fhir.org/baseR4/Patient?_pretty=true")
         .then((res) => res.json())
         .then((result) => {
           setPatients(result.entry);
+          setPatientFilter(result.entry);
         })
         .catch((err) => console.log(err));
     }
-  }, [age, patients]);
-  const NewTableRow = ({ user, age = 0 }) => {
-    const [isValidAge, setValidAge] = useState(true);
-    const [filteredData, setFilterData] = useState(user.resource);
-    console.log(filteredData);
-    return (
-      <>
-        {filteredData.name ? (
-          filteredData.name.map((detail, index) => {
-            const getAge = () => {
-              const date = new Date(filteredData.birthDate);
-              let year = date.getUTCFullYear();
-              let diffYear = 2023 - year;
-              return diffYear;
-            };
+  }, [age]);
 
-            return (
-              <React.Fragment key={index}>
-                <td>
-                  <span className="rounded-full bg-gray-200 p-2 font-bold">
-                    {detail.prefix && detail.prefix[0].toString().slice(0, 1)}
-                    {detail.family && detail.family[0].toString().slice(0, 1)}
-                    {detail.given && detail.given[0].toString().slice(0, 1)}
-                  </span>
-                </td>
-                <td>
-                  {detail.prefix} {detail.family} {detail.given}{" "}
-                </td>
-                <td>{filteredData.gender}</td>
-                <td>
-                  {getAge() > 1 ? getAge() : "-"}
-                  {/* {filteredData.birthDate} */}
-                </td>
-                <td
-                  dangerouslySetInnerHTML={{
-                    __html: filteredData.text.div,
-                  }}
-                />
-                <td>
-                  <a className="rounded-md border-2 bg-gray-300" href="">
-                    details
-                  </a>
-                </td>
-              </React.Fragment>
-            );
-          })
-        ) : (
-          <div>loading...</div>
-        )}
-      </>
-    );
-  };
   const date = new Date();
   const showTime =
     date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
 
   return (
-    <div className="patient_page">
-      <div className="bg-white flex items-center justify-between">
-        <h3 className="p-2 border-b-2 bg-white font-bold">{title}</h3>
+    <div className="patient_page bg-gray-100">
+      <div className="bg-white shadow-lg flex items-center justify-between">
+        <h3 className="p-2 bg-white font-bold">{title}</h3>
         <div className="flex justify-evenly items-center p-2">
-          <div>{showTime}</div>
-          <div>Stop</div>
-          <div>more</div>
+          <div className="font-bold">{showTime}</div>
+          <div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="red"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="white"
+              className="w-6 h-6 text-white"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 9.563C9 9.252 9.252 9 9.563 9h4.874c.311 0 .563.252.563.563v4.874c0 .311-.252.563-.563.563H9.564A.562.562 0 019 14.437V9.564z"
+              />
+            </svg>
+          </div>
+          <div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
+              />
+            </svg>
+          </div>
         </div>
       </div>
-      <div className="m-10 absolute h-42 overscroll-auto md:overscroll-contain">
+      <div className="p-10 bg-gray-100 w-full absolute h-42 overscroll-auto md:overscroll-contain">
         <FilterAge updateAge={handleAgeUpdate} />
-        <div>Total:{patientFilter.length}</div>
-        <table className="">
-          <thead className="font-bold capitalize">
+        {/* <div>Total:{patientFilter.length}</div> */}
+        <table>
+          <thead
+            className="font-bold capitalize"
+            style={{ display: patientFilter.length > 0 ? "" : "none" }}
+          >
             <tr>
-              <td>profile</td>
-              <td>Name</td>
-              {/* <td>Visit Time</td> */}
-              <td>Gender</td>
-              <td>Age</td>
-              <td>Condition</td>
+              <td>
+                <p>
+                  <span>profile</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"
+                    />
+                  </svg>
+                </p>
+              </td>
+              <td>
+                <p>
+                  <span>Name</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"
+                    />
+                  </svg>
+                </p>
+              </td>
+              {/* <td><div>Visit Time</div></td> */}
+              <td>
+                <p>
+                  <span>Gender</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"
+                    />
+                  </svg>
+                </p>
+              </td>
+              <td>
+                <p>
+                  <span>Age</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"
+                    />
+                  </svg>
+                </p>
+              </td>
+              <td>
+                <p>
+                  <span>Condition</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"
+                    />
+                  </svg>
+                </p>
+              </td>
               <td></td>
             </tr>
           </thead>
           <tbody>
-            {patientFilter &&
+            {patientFilter && patientFilter.length > 0 ? (
               patientFilter.map((item, index) => {
                 const getAge = () => {
                   const date = new Date(item.resource.birthDate);
                   let year = date.getUTCFullYear();
                   let diffYear = 2023 - year;
+                  if (isNaN(diffYear) && !item.resource.birthDate) {
+                    return "-";
+                  }
+
                   return diffYear;
                 };
                 return (
                   <tr
-                    key={item.name + index * Math.random(5)}
-                    // style={{
-                    //   display: getAge() < age ? "table-row" : "none",
-                    // }}
+                    key={Math.random(5)}
+                    age={getAge()}
+                    style={{
+                      display: isNaN(getAge())
+                        ? "table-row"
+                        : getAge() < age
+                          ? "table-row"
+                          : "none",
+                    }}
                   >
-                    {item ? <NewTableRow user={item} age={age} /> : null}
+                    {item ? <NewTableRow user={item} age={getAge()} /> : null}
                   </tr>
                 );
-              })}
+              })
+            ) : (
+              <tr>
+                <td>
+                  <p className="justify-center text-center">Loading...</p>
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

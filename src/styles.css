@@ -2,8 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 body {
-  @apply bg-gray-300;
-  overflow: auto;
+  @apply bg-gray-100;
 }
 .header {
   @apply border-b-2 bg-white p-3 flex justify-between;
@@ -27,6 +26,10 @@ table td {
 table thead td {
   background-color: transparent;
 }
+table thead td div {
+  display: flex;
+  justify-content: space-arround;
+}
 
 table tbody {
   @apply bg-white shadow-lg;
@@ -47,4 +50,7 @@ table tbody td {
 
 #range-slider .range-slider__range {
   border-radius: 1px;
+}
+svg:hover {
+  cursor: pointer;
 }
