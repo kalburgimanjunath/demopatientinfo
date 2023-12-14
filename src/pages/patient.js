@@ -113,9 +113,9 @@ export default function Patient({ title }) {
                 return (
                   <tr
                     key={item.name + index * Math.random(5)}
-                    style={{
-                      display: getAge() < age ? "table-row" : "none",
-                    }}
+                    // style={{
+                    //   display: getAge() < age ? "table-row" : "none",
+                    // }}
                   >
                     {item ? <NewTableRow user={item} age={age} /> : null}
                   </tr>
