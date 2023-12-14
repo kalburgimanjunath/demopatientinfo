@@ -14,15 +14,15 @@ export default function Patient({ title }) {
       .catch((err) => console.log(err));
   }, []);
   const NewTableRow = ({ user, age = 0 }) => {
-    console.log(user);
     const [isValidAge, setValidAge] = useState(true);
-
+    const [filteredData, setFilterData] = useState(user.resource);
+    useEffect(() => {}, [age]);
     return (
       <>
-        {user.resource.name ? (
-          user.resource.name.map((detail, index) => {
+        {filteredData.name ? (
+          filteredData.name.map((detail, index) => {
             const getAge = () => {
-              const date = new Date(user.resource.birthDate);
+              const date = new Date(filteredData.birthDate);
               let year = date.getUTCFullYear();
               let diffYear = 2023 - year;
               return diffYear;
@@ -30,15 +30,21 @@ export default function Patient({ title }) {
 
             return (
               <React.Fragment key={index}>
-                <td></td>
+                <td>
+                  <span className="rounded-full bg-gray-200 p-2 font-bold">
+                    {detail.prefix && detail.prefix[0].toString().slice(0, 1)}
+                    {detail.family && detail.family[0].toString().slice(0, 1)}
+                    {detail.given && detail.given[0].toString().slice(0, 1)}
+                  </span>
+                </td>
                 <td>
                   {detail.prefix} {detail.family} {detail.given}{" "}
                 </td>
-                <td>{user.resource.gender}</td>
+                <td>{filteredData.gender}</td>
                 <td>{getAge() > 1 ? getAge() : "-"}</td>
                 <td
                   dangerouslySetInnerHTML={{
-                    __html: user.resource.text.div,
+                    __html: filteredData.text.div,
                   }}
                 />
                 <td>
