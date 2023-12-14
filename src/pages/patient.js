@@ -85,7 +85,6 @@ export default function Patient({ title }) {
       </div>
       <div className="p-10 bg-gray-100 w-full newtable">
         <FilterAge updateAge={handleAgeUpdate} />
-        {/* <div>Total:{patientFilter.length}</div> */}
         <table>
           <thead
             className="font-bold capitalize"
@@ -193,7 +192,7 @@ export default function Patient({ title }) {
           </thead>
           <tbody>
             {patientFilter && patientFilter.length > 0 ? (
-              patientFilter.map((item, index) => {
+              patientFilter.map((item) => {
                 const getAge = () => {
                   const date = new Date(item.resource.birthDate);
                   let year = date.getUTCFullYear();
@@ -207,7 +206,6 @@ export default function Patient({ title }) {
                 return (
                   <tr
                     key={Math.random(5)}
-                    age={getAge()}
                     style={{
                       display: isNaN(getAge())
                         ? "table-row"

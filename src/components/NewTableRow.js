@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 export default function NewTableRow({ user, age }) {
-  const [filteredData, setFilterData] = useState(user.resource);
+  const [filteredData, setFilterData] = useState([]);
+  useEffect(() => {
+    return setFilterData(user.resource);
+  }, []);
   return (
     <>
       {filteredData.name
