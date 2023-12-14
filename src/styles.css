@@ -7,12 +7,16 @@ body {
 }
 .header {
   @apply border-b-2 bg-white p-3 flex justify-between;
-  left: 120px;
+  left: 57px;
   position: fixed;
   width: 100%;
 }
 .sidebar {
-  @apply list-none shadow-lg border-2 p-2 fixed bg-white h-full top-0 left-0 justify-end;
+  @apply list-none shadow-lg bg-violet-600  p-2 fixed h-full top-0 left-0 justify-end;
+}
+.sidebar li {
+  @apply p-2;
+  cursor: pointer;
 }
 table {
   @apply justify-center;
@@ -33,7 +37,7 @@ table tbody td {
 
 .patient_page {
   position: fixed;
-  left: 120px;
+  left: 57px;
   top: 53px;
   right: 0;
 }
