@@ -17,6 +17,12 @@ body {
   @apply p-2;
   cursor: pointer;
 }
+.newtable {
+  overflow: scroll;
+  bottom: 0;
+  top: 0;
+  height: 550px;
+}
 table {
   @apply justify-center;
 }

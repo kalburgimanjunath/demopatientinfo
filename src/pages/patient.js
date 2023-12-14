@@ -83,7 +83,7 @@ export default function Patient({ title }) {
           </div>
         </div>
       </div>
-      <div className="p-10 bg-gray-100 w-full absolute h-42 overscroll-auto md:overscroll-contain">
+      <div className="p-10 bg-gray-100 w-full newtable">
         <FilterAge updateAge={handleAgeUpdate} />
         {/* <div>Total:{patientFilter.length}</div> */}
         <table>
