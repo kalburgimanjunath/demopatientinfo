@@ -32,9 +32,9 @@ table td {
 table thead td {
   background-color: transparent;
 }
-table thead td div {
+table thead tr td p {
   display: flex;
-  justify-content: space-arround;
+  justify-content: space-between;
 }
 
 table tbody {
@@ -43,7 +43,6 @@ table tbody {
 table tbody td {
   @apply border border-gray-200;
 }
-
 .patient_page {
   position: fixed;
   left: 57px;
@@ -59,4 +58,5 @@ table tbody td {
 }
 svg:hover {
   cursor: pointer;
+  display: inline;
 }
