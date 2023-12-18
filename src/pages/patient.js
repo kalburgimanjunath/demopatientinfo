@@ -22,15 +22,22 @@ export default function Patient({ title }) {
     });
     setPatientFilter(newPatientList);
   }
-  useEffect(() => {
-    if (age == 0) {
-      fetch("https://hapi.fhir.org/baseR4/Patient?_pretty=true")
+  const loadData = async () => {
+    try {
+      await fetch("https://hapi.fhir.org/baseR4/Patient?_pretty=true")
         .then((res) => res.json())
         .then((result) => {
           setPatients(result.entry);
           setPatientFilter(result.entry);
         })
         .catch((err) => console.log(err));
+    } catch {
+      (error) => console.log(error);
+    }
+  };
+  useEffect(() => {
+    if (age == 0) {
+      loadData();
     }
   }, [age]);
 
